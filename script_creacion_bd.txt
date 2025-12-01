@@ -1,0 +1,134 @@
+-- Script para la creación de la base de datos 'sistema_escolar'
+DROP SCHEMA IF EXISTS sistema_escolar;
+CREATE SCHEMA sistema_escolar;
+USE sistema_escolar;
+
+-- Creación de las tablas
+
+-- Tabla de paises
+CREATE TABLE paises (id INT NOT NULL AUTO_INCREMENT,
+                     nombre VARCHAR(100) NOT NULL UNIQUE,
+                     codigo_iso VARCHAR(3) NOT NULL UNIQUE,
+                     PRIMARY KEY (id));
+
+-- Tabla departamentos
+CREATE TABLE departamentos (id INT NOT NULL AUTO_INCREMENT,
+                            nombre VARCHAR(50) NOT NULL UNIQUE,
+                            pais_id INT NOT NULL,
+                            PRIMARY KEY (id),
+                            FOREIGN KEY (pais_id) REFERENCES paises(id));
+
+-- Tabla ciudades 
+CREATE TABLE ciudades (id INT NOT NULL AUTO_INCREMENT,
+                   nombre VARCHAR(50) NOT NULL,
+                   departamento_id INT NOT NULL,
+                   PRIMARY KEY (id),
+                   FOREIGN KEY (departamento_id) REFERENCES departamentos(id));
+
+-- Tabla de tipos de Documento
+CREATE TABLE tipos_documento (id INT NOT NULL AUTO_INCREMENT,
+                             nombre VARCHAR(60) NOT NULL UNIQUE,
+                             PRIMARY KEY (id));
+
+-- Tabla de generos
+CREATE TABLE generos (id INT NOT NULL AUTO_INCREMENT,
+                      nombre VARCHAR(20) NOT NULL UNIQUE,
+                      PRIMARY KEY (id));
+
+-- Tabla de estratos
+CREATE TABLE estratos (id INT NOT NULL AUTO_INCREMENT,
+                       nombre VARCHAR(20) NOT NULL UNIQUE,
+                       PRIMARY KEY (id));
+
+-- Tabla de estados civiles
+CREATE TABLE estado_civil (id INT NOT NULL AUTO_INCREMENT,
+                           nombre VARCHAR(30) NOT NULL UNIQUE,
+                           PRIMARY KEY (id));
+
+-- Tabla de niveles educativos
+CREATE TABLE nivel_educativo (id INT NOT NULL AUTO_INCREMENT,
+                              nombre VARCHAR(50) NOT NULL UNIQUE,
+                              PRIMARY KEY (id));
+
+-- Tabla de aulas
+CREATE TABLE aulas (id INT NOT NULL AUTO_INCREMENT,
+                   nombre VARCHAR(50) NOT NULL UNIQUE,
+                   capacidad INT NOT NULL CHECK (capacidad >= 0),
+                   estado VARCHAR(20) NOT NULL UNIQUE,
+                   PRIMARY KEY (id));
+
+-- Tabla de areas educativas
+CREATE TABLE areas (id INT NOT NULL AUTO_INCREMENT,
+                    nombre VARCHAR(128) NOT NULL,
+                    obligatoria BOOLEAN NOT NULL DEFAULT true,
+                    PRIMARY KEY (id));
+
+-- Tabla de grados
+CREATE TABLE grados (id INT NOT NULL AUTO_INCREMENT,
+                    nombre VARCHAR(10) NOT NULL UNIQUE,
+                    nivel_id INT NOT NULL,
+                    PRIMARY KEY (id),
+                    FOREIGN KEY (nivel_id) REFERENCES nivel_educativo(id));
+
+-- Tabla de asignaturas
+CREATE TABLE asignaturas (id INT NOT NULL AUTO_INCREMENT,
+                          nombre VARCHAR(100) NOT NULL,
+                          area_id INT NOT NULL,
+                          grado_id INT NOT NULL,
+                          PRIMARY KEY (id),
+                          FOREIGN KEY (area_id) REFERENCES areas(id),
+                          FOREIGN KEY (grado_id) REFERENCES grados(id));
+
+-- Tabla de grupos
+CRATE TABLE grupos (id INT NOT NULL AUTO_INCREMENT,
+                    nombre VARCHAR() NOT NULL UNIQUE,
+                    aula_id INT NOT NULL,
+                    grado_id INT NOT NULL,
+                    PRIMARY KEY (id),
+                    FOREIGN KEY (aula_id) REFERENCES aulas(id),
+                    FOREIGN KEY (grado_id) REFERENCES grados(id));
+
+-- Tabla de roles
+CREATE TABLE roles (id INT NOT NULL AUTO_INCREMENT,
+                    nombre VARCHAR(50) NOT NULL UNIQUE,
+                    PRIMARY KEY (id));
+
+-- Tabla de usuarios
+CREATE TABLE usuarios (id INT NOT NULL AUTO_INCREMENT,
+            clave VARCHAR(128) NOT NULL,
+            ultimo_ingreso TIMESTAMP,
+            is_superuser BOOLEAN DEFAULT false,
+            correo VARCHAR(256) NOT NULL UNIQUE,
+            fecha_creacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            activo BOOLEAN DEFAULT false,
+            is_staff BOOLEAN DEFAULT false,
+            rol_id INT NOT NULL,
+            activado_por INT,
+            PRIMARY KEY (id),
+            FOREIGN KEY (rol_id) REFERENCES roles(id),
+            FOREIGN KEY (activado_por) REFERENCES usuarios(id));
+
+-- Tabla de temas
+CREATE TABLE temas (id INT NOT NULL AUTO_INCREMENT,
+                    nombre VARCHAR(100) NOT NULL,
+                    asignatura_id INT NOT NULL,
+                    PRIMARY KEY (id),
+                    FOREIGN KEY (asignatura_id) REFERENCES asignaturas(id));
+
+-- Tabla de perfiles de usuarios
+CRATE TABLE perfil_usuario (id INT NOT NULL AUTO_INCREMENT,
+                            primer_nombre VARCHAR(25) NOT NULL,
+                            segundo_nombre VARCHAR(25),
+                            primer_apellido VARCHAR(25) NOT NULL,
+                            segundo_apellido VARCHAR(25),
+                            direccion1 VARCHAR(128) NOT NULL,
+                            direccion2 VARCHAR(),
+                            ciudad_id INT NOT NULL,
+                            usuario_id INT NOT NULL,
+                            especialidad VARCHAR(),
+                            grupo_id INT NOT NULL,
+                            foto VARCHAR(128) DEFAULT 'no_imagen.png',
+                            PRIMARY KEY (id),
+                            FOREIGN KEY (ciudad_id) REFERENCES ciudades(id),
+                            FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+                            FOREIGN KEY (grupo_id) REFERENCES grupos(id));

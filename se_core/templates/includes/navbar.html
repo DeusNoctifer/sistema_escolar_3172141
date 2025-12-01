@@ -1,0 +1,59 @@
+<nav>
+  <ul>
+    <li>
+      <a href="{% url 'index' %}">
+      <!-- <a href="#"> -->
+        <ion-icon name="home-outline"></ion-icon>
+        <span>INICIO</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'acercade' %}">
+      <!-- <a href="#"> -->
+        <ion-icon name="person-outline"></ion-icon>
+        <span>ACERCA DE</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'misionyvision' %}">
+      <!-- <a href="#"> -->
+        <ion-icon name="bookmarks-outline"></ion-icon>
+        <span>MISIÓN Y VISIÓN</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'contactanos' %}">
+      <!-- <a href="#"> -->
+        <ion-icon name="call-outline"></ion-icon>
+        <span>CONTÁCTANOS</span>
+      </a>
+    </li>
+    {% if user.is_authenticated %}
+      <li>     
+        <!-- <a href="# {# {% url 'logout' %} #}"> -->
+        <a href="#"></a>
+          <ion-icon name="log-out-outline"></ion-icon>
+          <span>{{ user.get_short_name }}: CERRAR SESIÓN</span>
+        </a>
+      </li>
+    {% else %}
+      <li>
+        <!-- <a href="{# {% url 'inicio' %} #}"> -->
+        <a href="{% url 'iniciar_sesion' %}">
+          <ion-icon name="log-in-outline"></ion-icon>
+          <span>INICIAR SESIÓN</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'registrarme' %}">
+          <ion-icon name="person-add-outline"></ion-icon>
+          <span>REGISTRARME</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+  <hr>
+</nav>
+
+<!-- <link rel="stylesheet" href="{# {% static 'css/user_dropdown.css' %} #}">
+<script src="{# {% static 'js/user_dropdown.js' %} #}"></script> -->
