@@ -17,7 +17,7 @@ def acercaDe(request):
 
 
 def iniciarSesion(request):
-    return render(request, 'se_core/login.html')
+    return render(request, 'se_core/login_frm.html')
 
 
 def inicioSesion(request):
