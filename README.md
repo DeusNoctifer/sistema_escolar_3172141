@@ -1,5 +1,6 @@
 # sistema_escolar_3172141
 Proyecto final de la ficha 3172141 del programa 'técnico en programación'
+
 Nota para este instructivo:
       Se asume que se tienen instalados, o se instalarán -
       el lenguaje de programación Python versión 3.13.5 o superior, el SGBD MySQL 
