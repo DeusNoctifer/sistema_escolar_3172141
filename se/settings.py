@@ -9,10 +9,16 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import pymysql
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+
+pymysql.install_as_MySQLdb()
+import MySQLdb
+
+setattr(MySQLdb, 'version_info', (2, 2, 7, 'final', 0))
+setattr(MySQLdb, '_version_', '2.2.7')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
@@ -26,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-_0v7i1rj8c8tuwup0o4pm@hs7-#pi6^1skj!@h4$e(em0x0ylg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
